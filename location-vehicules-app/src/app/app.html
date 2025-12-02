@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">
+      <i class="fas fa-car"></i> {{ title }}
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/vehicules" routerLinkActive="active">
+            <i class="fas fa-list"></i> Liste des Véhicules
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/vehicule/new" routerLinkActive="active">
+            <i class="fas fa-plus"></i> Nouveau Véhicule
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/location/new" routerLinkActive="active">
+            <i class="fas fa-calendar-plus"></i> Nouvelle Location
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="main-content">
+  <router-outlet></router-outlet>
+</div>
+
+
+<footer class="footer mt-5 py-3 bg-light">
+  <div class="container text-center">
+    <span class="text-muted">
+      © 2025 Gestion de Location de Véhicules - Zeineb BenJeddou
+    </span>
+  </div>
+</footer>

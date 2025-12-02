@@ -1,0 +1,33 @@
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-brand i {
+  margin-right: 0.5rem;
+  color: #ffc107;
+}
+
+.nav-link {
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffc107 !important;
+}
+
+.nav-link.active {
+  color: #ffc107 !important;
+  border-bottom: 2px solid #ffc107;
+}
+
+.main-content {
+  min-height: calc(100vh - 200px);
+  padding-bottom: 2rem;
+}
+
+.footer {
+  border-top: 1px solid #dee2e6;
+  margin-top: auto;
+}

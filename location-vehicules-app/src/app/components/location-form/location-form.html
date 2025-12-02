@@ -1,0 +1,146 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">
+            <i class="fas fa-calendar-plus"></i> Nouvelle Location
+          </h3>
+        </div>
+        
+        <div class="card-body">
+          
+          <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i> {{ successMessage }}
+            <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
+          </div>
+          
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+            <button type="button" class="btn-close" (click)="errorMessage = ''" aria-label="Close"></button>
+          </div>
+          
+          
+          <form [formGroup]="locationForm" (ngSubmit)="onSubmit()">
+            
+            
+            <div class="mb-3">
+              <label for="clientNom" class="form-label">
+                <i class="fas fa-user"></i> Nom du Client *
+              </label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="clientNom"
+                formControlName="clientNom"
+                [class.is-invalid]="submitted && f['clientNom'].errors"
+                placeholder="Entrez le nom du client">
+              
+              <div *ngIf="submitted && f['clientNom'].errors" class="invalid-feedback">
+                <div *ngIf="f['clientNom'].errors['required']">Le nom du client est obligatoire</div>
+                <div *ngIf="f['clientNom'].errors['minlength']">Le nom doit contenir au moins 2 caractères</div>
+              </div>
+            </div>
+            
+            
+            <div class="mb-3">
+              <label for="vehiculeId" class="form-label">
+                <i class="fas fa-car"></i> Véhicule *
+              </label>
+              <select 
+                class="form-select" 
+                id="vehiculeId"
+                formControlName="vehiculeId"
+                [class.is-invalid]="submitted && f['vehiculeId'].errors"
+                aria-label="Sélectionner un véhicule">
+                <option value="">-- Sélectionnez un véhicule --</option>
+                <option *ngFor="let vehicule of vehiculesDisponibles" [value]="vehicule.id">
+                  {{ vehicule.marque }} {{ vehicule.modele }} - {{ vehicule.prixJour | number:'1.2-2' }} DT/jour
+                </option>
+              </select>
+              
+              <div *ngIf="submitted && f['vehiculeId'].errors" class="invalid-feedback">
+                <div *ngIf="f['vehiculeId'].errors['required']">Veuillez sélectionner un véhicule</div>
+              </div>
+              
+              <small class="form-text text-muted" *ngIf="vehiculesDisponibles.length === 0">
+                <i class="fas fa-info-circle"></i> Aucun véhicule disponible actuellement
+              </small>
+            </div>
+            
+            
+            <div class="mb-3">
+              <label for="dateDebut" class="form-label">
+                <i class="fas fa-calendar-alt"></i> Date de Début *
+              </label>
+              <input 
+                type="date" 
+                class="form-control" 
+                id="dateDebut"
+                formControlName="dateDebut"
+                [class.is-invalid]="submitted && f['dateDebut'].errors">
+              
+              <div *ngIf="submitted && f['dateDebut'].errors" class="invalid-feedback">
+                <div *ngIf="f['dateDebut'].errors['required']">La date de début est obligatoire</div>
+              </div>
+            </div>
+            
+            
+            <div class="mb-3">
+              <label for="dateFin" class="form-label">
+                <i class="fas fa-calendar-check"></i> Date de Fin *
+              </label>
+              <input 
+                type="date" 
+                class="form-control" 
+                id="dateFin"
+                formControlName="dateFin"
+                [class.is-invalid]="submitted && (f['dateFin'].errors || locationForm.errors?.['dateFinInvalid'])">
+              
+              <div *ngIf="submitted && f['dateFin'].errors" class="invalid-feedback">
+                <div *ngIf="f['dateFin'].errors['required']">La date de fin est obligatoire</div>
+              </div>
+              
+              <div *ngIf="submitted && locationForm.errors?.['dateFinInvalid']" class="invalid-feedback d-block">
+                La date de fin doit être après la date de début
+              </div>
+            </div>
+            
+            
+            <div *ngIf="calculerNombreJours() > 0" class="alert alert-info">
+              <h5 class="alert-heading">
+                <i class="fas fa-calculator"></i> Résumé
+              </h5>
+              <p class="mb-1">
+                <strong>Durée :</strong> {{ calculerNombreJours() }} jour(s)
+              </p>
+              <p class="mb-0">
+                <strong>Prix Total :</strong> {{ calculerPrixTotal() | number:'1.2-2' }} DT
+              </p>
+            </div>
+            
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button 
+                type="button" 
+                class="btn btn-secondary" 
+                (click)="resetForm()"
+                [disabled]="loading">
+                <i class="fas fa-redo"></i> Réinitialiser
+              </button>
+              
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="loading || vehiculesDisponibles.length === 0">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <i *ngIf="!loading" class="fas fa-check"></i>
+                {{ loading ? 'Création...' : 'Créer la Location' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

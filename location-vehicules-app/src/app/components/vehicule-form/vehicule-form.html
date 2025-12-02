@@ -1,0 +1,71 @@
+<div class="container mt-4">
+	<div class="card shadow">
+		<div class="card-header bg-white">
+			<h3>Ajouter un nouveau véhicule</h3>
+		</div>
+
+		<div class="card-body">
+			<div *ngIf="successMessage" class="alert alert-success" role="alert">
+				{{ successMessage }}
+			</div>
+			<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+				{{ errorMessage }}
+			</div>
+
+			<form [formGroup]="vehiculeForm" (ngSubmit)="onSubmit()">
+				<div class="mb-3">
+					<label class="form-label">Marque</label>
+					<input type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.marque.invalid }" formControlName="marque" />
+					<div *ngIf="submitted && f.marque.invalid" class="invalid-feedback">
+						<div *ngIf="f.marque.errors?.required">La marque est requise.</div>
+						<div *ngIf="f.marque.errors?.minlength">La marque doit contenir au moins 2 caractères.</div>
+					</div>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label">Modèle</label>
+					<input type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.modele.invalid }" formControlName="modele" />
+					<div *ngIf="submitted && f.modele.invalid" class="invalid-feedback">
+						<div *ngIf="f.modele.errors?.required">Le modèle est requis.</div>
+					</div>
+				</div>
+
+				<div class="mb-3">
+								<label class="form-label">Prix par jour (DT)</label>
+								<div class="input-group">
+									<input
+										type="number"
+										class="form-control"
+										[ngClass]="{ 'is-invalid': submitted && f['prixJour'].invalid }"
+										formControlName="prixJour"
+										min="1"
+										step="0.01"
+										placeholder="0.00"
+										aria-label="Prix par jour en dinar tunisien"
+									/>
+									<span class="input-group-text">DT</span>
+								</div>
+					<div *ngIf="submitted && f.prixJour.invalid" class="invalid-feedback">
+							<div *ngIf="f['prixJour'].errors?.required">Le prix par jour est requis.</div>
+							<div *ngIf="f['prixJour'].errors?.min">Le prix doit être supérieur ou égal à 1 DT.</div>
+					</div>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label">Statut</label>
+					<select class="form-select" formControlName="statut">
+						<option *ngFor="let s of statutOptions" [value]="s">{{ s }}</option>
+					</select>
+				</div>
+
+				<div class="d-flex gap-2">
+					<button type="submit" class="btn btn-success" [disabled]="loading">
+						<span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+						Créer
+					</button>
+					<button type="button" class="btn btn-secondary" (click)="resetForm()" [disabled]="loading">Annuler</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
